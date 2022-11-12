@@ -93,10 +93,8 @@ export var Image = forwardRef(function (_a, ref) {
     useEffect(function () {
         if (imageRef.current === null)
             return;
-        if (imageRef.current.complete) {
-            console.log('image loaded from cache');
+        if (imageRef.current.complete)
             handleLoad();
-        }
     }, [imageRef]);
     var absolutePositioning = {
         position: 'absolute',
