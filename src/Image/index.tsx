@@ -226,7 +226,7 @@ export const Image = forwardRef<HTMLDivElement, ImagePropTypes>(
       [viewRef],
     );
 
-    useEffect(() => {
+    useEffect(() => { // Check if image loded from cache
       if (imageRef.current === null) return
       if (imageRef.current.complete) handleLoad()
     }, [imageRef])

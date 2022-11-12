@@ -115,8 +115,10 @@ exports.Image = (0, react_1.forwardRef)(function (_a, ref) {
     (0, react_1.useEffect)(function () {
         if (imageRef.current === null)
             return;
-        if (imageRef.current.complete)
+        if (imageRef.current.complete) {
+            console.log('image loaded from cache');
             handleLoad();
+        }
     }, [imageRef]);
     var absolutePositioning = {
         position: 'absolute',
