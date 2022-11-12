@@ -1,4 +1,4 @@
-import React, { useState, forwardRef, useCallback, CSSProperties } from 'react';
+import React, { useState, useEffect, useRef, forwardRef, useCallback, CSSProperties } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { encode } from 'universal-base64';
 
@@ -203,7 +203,7 @@ export const Image = forwardRef<HTMLDivElement, ImagePropTypes>(
     ref,
   ) => {
     const lazyLoad = priority ? false : rawLazyLoad;
-
+    const imageRef = useRef<HTMLImageElement | null>(null)
     const [loaded, setLoaded] = useState(false);
 
     const handleLoad = () => {
@@ -225,6 +225,11 @@ export const Image = forwardRef<HTMLDivElement, ImagePropTypes>(
       },
       [viewRef],
     );
+
+    useEffect(() => {
+      if (imageRef.current === null) return
+      if (imageRef.current.complete) handleLoad()
+    }, [imageRef])
 
     const absolutePositioning: React.CSSProperties = {
       position: 'absolute',
@@ -287,6 +292,7 @@ export const Image = forwardRef<HTMLDivElement, ImagePropTypes>(
             top: '-5%',
             width: '110%',
             height: '110%',
+            ...pictureStyle
           }}
         />
       ) : null;
@@ -319,10 +325,10 @@ export const Image = forwardRef<HTMLDivElement, ImagePropTypes>(
           ...(layout === 'fill'
             ? absolutePositioning
             : layout === 'intrinsic'
-            ? { position: 'relative', width: '100%', maxWidth: width }
-            : layout === 'fixed'
-            ? { position: 'relative', width }
-            : { position: 'relative', width: '100%' }),
+              ? { position: 'relative', width: '100%', maxWidth: width }
+              : layout === 'fixed'
+                ? { position: 'relative', width }
+                : { position: 'relative', width: '100%' }),
           ...style,
         }}
       >
@@ -334,6 +340,7 @@ export const Image = forwardRef<HTMLDivElement, ImagePropTypes>(
             {regularSource}
             {data.src && (
               <img
+                ref={imageRef}
                 src={data.src}
                 alt={data.alt ?? ''}
                 title={data.title ?? undefined}
