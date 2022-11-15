@@ -1,4 +1,11 @@
-import React, { useState, useEffect, useRef, forwardRef, useCallback, CSSProperties } from 'react';
+import React, {
+  useState,
+  forwardRef,
+  useCallback,
+  CSSProperties,
+  useRef,
+  useEffect,
+} from 'react';
 import { useInView } from 'react-intersection-observer';
 import { encode } from 'universal-base64';
 
@@ -42,6 +49,8 @@ export type ImagePropTypes = {
   className?: string;
   /** Additional CSS class for the image inside the `<picture />` tag */
   pictureClassName?: string;
+  /** Additional CSS class for the placeholder image */
+  placeholderClassName?: string;
   /** Duration (in ms) of the fade-in transition effect upoad image loading */
   fadeInDuration?: number;
   /** @deprecated Use the intersectionThreshold prop */
@@ -56,6 +65,8 @@ export type ImagePropTypes = {
   style?: React.CSSProperties;
   /** Additional CSS rules to add to the image inside the `<picture />` tag */
   pictureStyle?: React.CSSProperties;
+  /** Additional CSS rules to add to the placeholder image */
+  placeholderStyle?: React.CSSProperties;
   /**
    * The layout behavior of the image as the viewport changes size
    *
@@ -140,7 +151,7 @@ const buildSrcSet = (
   width: number | undefined,
   candidateMultipliers: number[],
 ) => {
-  if (!src || !width) {
+  if (!(src && width)) {
     return undefined;
   }
 
@@ -199,6 +210,8 @@ export const Image = forwardRef<HTMLDivElement, ImagePropTypes>(
       priority = false,
       sizes,
       srcSetCandidates = [0.25, 0.5, 0.75, 1, 1.5, 2, 3, 4],
+      placeholderClassName,
+      placeholderStyle,
     },
     ref,
   ) => {
@@ -206,10 +219,23 @@ export const Image = forwardRef<HTMLDivElement, ImagePropTypes>(
     const imageRef = useRef<HTMLImageElement | null>(null)
     const [loaded, setLoaded] = useState(false);
 
+    const imageRef = useRef<HTMLImageElement>(null);
+
     const handleLoad = () => {
       onLoad?.();
       setLoaded(true);
     };
+
+    // https://stackoverflow.com/q/39777833/266535
+    useEffect(() => {
+      if (!imageRef.current) {
+        return;
+      }
+
+      if (imageRef.current.complete && imageRef.current.naturalWidth) {
+        handleLoad();
+      }
+    }, []);
 
     const [viewRef, inView] = useInView({
       threshold: intersectionThreshold || intersectionTreshold || 0,
@@ -221,7 +247,9 @@ export const Image = forwardRef<HTMLDivElement, ImagePropTypes>(
     const callbackRef = useCallback(
       (_ref: HTMLDivElement) => {
         viewRef(_ref);
-        if (ref) (ref as React.MutableRefObject<HTMLDivElement>).current = _ref;
+        if (ref) {
+          (ref as React.MutableRefObject<HTMLDivElement>).current = _ref;
+        }
       },
       [viewRef],
     );
@@ -237,6 +265,8 @@ export const Image = forwardRef<HTMLDivElement, ImagePropTypes>(
       top: 0,
       width: '100%',
       height: '100%',
+      maxWidth: 'none',
+      maxHeight: 'none',
     };
 
     const addImage = imageAddStrategy({
@@ -277,6 +307,7 @@ export const Image = forwardRef<HTMLDivElement, ImagePropTypes>(
           aria-hidden="true"
           alt=""
           src={data.base64 ?? undefined}
+          className={placeholderClassName}
           style={{
             backgroundColor: data.bgColor ?? undefined,
             objectFit,
@@ -292,7 +323,9 @@ export const Image = forwardRef<HTMLDivElement, ImagePropTypes>(
             top: '-5%',
             width: '110%',
             height: '110%',
-            ...pictureStyle
+            maxWidth: 'none',
+            maxHeight: 'none',
+            ...placeholderStyle,
           }}
         />
       ) : null;
@@ -369,7 +402,12 @@ export const Image = forwardRef<HTMLDivElement, ImagePropTypes>(
                 alt={data.alt ?? ''}
                 title={data.title ?? undefined}
                 className={pictureClassName}
-                style={{ ...absolutePositioning, ...pictureStyle }}
+                style={{
+                  ...absolutePositioning,
+                  objectFit,
+                  objectPosition,
+                  ...pictureStyle,
+                }}
                 loading={lazyLoad ? 'lazy' : undefined}
                 fetchpriority={priority ? 'high' : undefined}
               />
