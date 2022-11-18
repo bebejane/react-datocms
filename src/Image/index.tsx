@@ -297,7 +297,7 @@ export const Image = forwardRef<HTMLDivElement, ImagePropTypes>(
 
     //const transition = fadeInDuration > 0 ? `opacity ${fadeInDuration}ms` : undefined;
     const transition = fadeInDuration > 0 ? `filter ${fadeInDuration * 2}ms` : undefined;
-    const filter = loaded ? `blur(0px)` : `blur(100px)`
+    const filter = loaded ? `blur(0px)` : `blur(50px)`
 
     const placeholder =
       usePlaceholder && (data.bgColor || data.base64) ? (

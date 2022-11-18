@@ -151,7 +151,7 @@ exports.Image = (0, react_1.forwardRef)(function (_a, ref) {
     var regularSource = (react_1["default"].createElement("source", { srcSet: (_c = data.srcSet) !== null && _c !== void 0 ? _c : buildSrcSet(data.src, data.width, srcSetCandidates), sizes: (_d = sizes !== null && sizes !== void 0 ? sizes : data.sizes) !== null && _d !== void 0 ? _d : undefined }));
     //const transition = fadeInDuration > 0 ? `opacity ${fadeInDuration}ms` : undefined;
     var transition = fadeInDuration > 0 ? "filter ".concat(fadeInDuration * 2, "ms") : undefined;
-    var filter = loaded ? "blur(0px)" : "blur(100px)";
+    var filter = loaded ? "blur(0px)" : "blur(50px)";
     var placeholder = usePlaceholder && (data.bgColor || data.base64) ? (react_1["default"].createElement("img", { role: "presentation", "aria-hidden": "true", alt: "", src: (_e = data.base64) !== null && _e !== void 0 ? _e : undefined, className: placeholderClassName, style: __assign({ backgroundColor: (_f = data.bgColor) !== null && _f !== void 0 ? _f : undefined, objectFit: objectFit, objectPosition: objectPosition, transition: transition, opacity: showImage ? 0 : 1, 
             // During the opacity transition of the placeholder to the definitive version,
             // hardware acceleration is triggered. This results in the browser trying to render the
