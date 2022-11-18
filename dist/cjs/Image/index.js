@@ -150,7 +150,8 @@ exports.Image = (0, react_1.forwardRef)(function (_a, ref) {
     var webpSource = data.webpSrcSet && (react_1["default"].createElement("source", { srcSet: data.webpSrcSet, sizes: (_b = sizes !== null && sizes !== void 0 ? sizes : data.sizes) !== null && _b !== void 0 ? _b : undefined, type: "image/webp" }));
     var regularSource = (react_1["default"].createElement("source", { srcSet: (_c = data.srcSet) !== null && _c !== void 0 ? _c : buildSrcSet(data.src, data.width, srcSetCandidates), sizes: (_d = sizes !== null && sizes !== void 0 ? sizes : data.sizes) !== null && _d !== void 0 ? _d : undefined }));
     //const transition = fadeInDuration > 0 ? `opacity ${fadeInDuration}ms` : undefined;
-    var transition = fadeInDuration > 0 ? "opacity ".concat(fadeInDuration, "ms, filter ").concat(fadeInDuration, "ms") : undefined;
+    var transition = fadeInDuration > 0 ? "filter ".concat(fadeInDuration * 2, "ms") : undefined;
+    var filter = loaded ? "blur(0px)" : "blur(100px)";
     var placeholder = usePlaceholder && (data.bgColor || data.base64) ? (react_1["default"].createElement("img", { role: "presentation", "aria-hidden": "true", alt: "", src: (_e = data.base64) !== null && _e !== void 0 ? _e : undefined, className: placeholderClassName, style: __assign({ backgroundColor: (_f = data.bgColor) !== null && _f !== void 0 ? _f : undefined, objectFit: objectFit, objectPosition: objectPosition, transition: transition, opacity: showImage ? 0 : 1, 
             // During the opacity transition of the placeholder to the definitive version,
             // hardware acceleration is triggered. This results in the browser trying to render the
@@ -176,7 +177,7 @@ exports.Image = (0, react_1.forwardRef)(function (_a, ref) {
         addImage && (react_1["default"].createElement("picture", null,
             webpSource,
             regularSource,
-            data.src && (react_1["default"].createElement("img", { ref: imageRef, src: data.src, alt: (_h = data.alt) !== null && _h !== void 0 ? _h : '', title: (_j = data.title) !== null && _j !== void 0 ? _j : undefined, onLoad: handleLoad, fetchpriority: priority ? 'high' : undefined, className: pictureClassName, style: __assign(__assign(__assign({ opacity: showImage ? 1 : 0, filter: loaded ? "blur(0px)" : "blur(100px)", transition: transition }, absolutePositioning), { objectFit: objectFit, objectPosition: objectPosition }), pictureStyle) })))),
+            data.src && (react_1["default"].createElement("img", { ref: imageRef, src: data.src, alt: (_h = data.alt) !== null && _h !== void 0 ? _h : '', title: (_j = data.title) !== null && _j !== void 0 ? _j : undefined, onLoad: handleLoad, fetchpriority: priority ? 'high' : undefined, className: pictureClassName, style: __assign(__assign(__assign({ opacity: showImage ? 1 : 0, filter: filter, transition: transition }, absolutePositioning), { objectFit: objectFit, objectPosition: objectPosition }), pictureStyle) })))),
         react_1["default"].createElement("noscript", null,
             react_1["default"].createElement("picture", null,
                 webpSource,
