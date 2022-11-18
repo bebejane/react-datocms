@@ -40,7 +40,7 @@ export function StructuredText(_a) {
                 if (!renderInlineRecord) {
                     throw new RenderError("The Structured Text document contains an 'inlineItem' node, but no 'renderInlineRecord' prop is specified!", node);
                 }
-                if (!isStructuredText(data) || !data.links) {
+                if (!(isStructuredText(data) && data.links)) {
                     throw new RenderError("The document contains an 'itemLink' node, but the passed data prop is not a Structured Text GraphQL response, or data.links is not present!", node);
                 }
                 var item = data.links.find(function (item) { return item.id === node.item; });
@@ -54,7 +54,7 @@ export function StructuredText(_a) {
                 if (!renderLinkToRecord) {
                     throw new RenderError("The Structured Text document contains an 'itemLink' node, but no 'renderLinkToRecord' prop is specified!", node);
                 }
-                if (!isStructuredText(data) || !data.links) {
+                if (!(isStructuredText(data) && data.links)) {
                     throw new RenderError("The document contains an 'itemLink' node, but the passed data prop is not a Structured Text GraphQL response, or data.links is not present!", node);
                 }
                 var item = data.links.find(function (item) { return item.id === node.item; });
@@ -77,7 +77,7 @@ export function StructuredText(_a) {
                 if (!renderBlock) {
                     throw new RenderError("The Structured Text document contains a 'block' node, but no 'renderBlock' prop is specified!", node);
                 }
-                if (!isStructuredText(data) || !data.blocks) {
+                if (!(isStructuredText(data) && data.blocks)) {
                     throw new RenderError("The document contains an 'block' node, but the passed data prop is not a Structured Text GraphQL response, or data.blocks is not present!", node);
                 }
                 var item = data.blocks.find(function (item) { return item.id === node.item; });

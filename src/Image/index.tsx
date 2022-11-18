@@ -219,8 +219,6 @@ export const Image = forwardRef<HTMLDivElement, ImagePropTypes>(
     const imageRef = useRef<HTMLImageElement | null>(null)
     const [loaded, setLoaded] = useState(false);
 
-    const imageRef = useRef<HTMLImageElement>(null);
-
     const handleLoad = () => {
       onLoad?.();
       setLoaded(true);

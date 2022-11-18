@@ -9,7 +9,7 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-import React, { useState, useEffect, useRef, forwardRef, useCallback } from 'react';
+import React, { useState, forwardRef, useCallback, useRef, useEffect, } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { encode } from 'universal-base64';
 var isSsr = typeof window === 'undefined';
@@ -43,7 +43,7 @@ var imageShowStrategy = function (_a) {
     return true;
 };
 var buildSrcSet = function (src, width, candidateMultipliers) {
-    if (!src || !width) {
+    if (!(src && width)) {
         return undefined;
     }
     return candidateMultipliers
@@ -71,7 +71,7 @@ var buildSrcSet = function (src, width, candidateMultipliers) {
 };
 export var Image = forwardRef(function (_a, ref) {
     var _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
-    var className = _a.className, _m = _a.fadeInDuration, fadeInDuration = _m === void 0 ? 500 : _m, intersectionTreshold = _a.intersectionTreshold, intersectionThreshold = _a.intersectionThreshold, intersectionMargin = _a.intersectionMargin, pictureClassName = _a.pictureClassName, _o = _a.lazyLoad, rawLazyLoad = _o === void 0 ? true : _o, style = _a.style, pictureStyle = _a.pictureStyle, _p = _a.layout, layout = _p === void 0 ? 'intrinsic' : _p, objectFit = _a.objectFit, objectPosition = _a.objectPosition, data = _a.data, onLoad = _a.onLoad, _q = _a.usePlaceholder, usePlaceholder = _q === void 0 ? true : _q, _r = _a.priority, priority = _r === void 0 ? false : _r, sizes = _a.sizes, _s = _a.srcSetCandidates, srcSetCandidates = _s === void 0 ? [0.25, 0.5, 0.75, 1, 1.5, 2, 3, 4] : _s;
+    var className = _a.className, _m = _a.fadeInDuration, fadeInDuration = _m === void 0 ? 500 : _m, intersectionTreshold = _a.intersectionTreshold, intersectionThreshold = _a.intersectionThreshold, intersectionMargin = _a.intersectionMargin, pictureClassName = _a.pictureClassName, _o = _a.lazyLoad, rawLazyLoad = _o === void 0 ? true : _o, style = _a.style, pictureStyle = _a.pictureStyle, _p = _a.layout, layout = _p === void 0 ? 'intrinsic' : _p, objectFit = _a.objectFit, objectPosition = _a.objectPosition, data = _a.data, onLoad = _a.onLoad, _q = _a.usePlaceholder, usePlaceholder = _q === void 0 ? true : _q, _r = _a.priority, priority = _r === void 0 ? false : _r, sizes = _a.sizes, _s = _a.srcSetCandidates, srcSetCandidates = _s === void 0 ? [0.25, 0.5, 0.75, 1, 1.5, 2, 3, 4] : _s, placeholderClassName = _a.placeholderClassName, placeholderStyle = _a.placeholderStyle;
     var lazyLoad = priority ? false : rawLazyLoad;
     var imageRef = useRef(null);
     var _t = useState(false), loaded = _t[0], setLoaded = _t[1];
@@ -79,6 +79,15 @@ export var Image = forwardRef(function (_a, ref) {
         onLoad === null || onLoad === void 0 ? void 0 : onLoad();
         setLoaded(true);
     };
+    // https://stackoverflow.com/q/39777833/266535
+    useEffect(function () {
+        if (!imageRef.current) {
+            return;
+        }
+        if (imageRef.current.complete && imageRef.current.naturalWidth) {
+            handleLoad();
+        }
+    }, []);
     var _u = useInView({
         threshold: intersectionThreshold || intersectionTreshold || 0,
         rootMargin: intersectionMargin || '0px 0px 0px 0px',
@@ -87,8 +96,9 @@ export var Image = forwardRef(function (_a, ref) {
     }), viewRef = _u[0], inView = _u[1];
     var callbackRef = useCallback(function (_ref) {
         viewRef(_ref);
-        if (ref)
+        if (ref) {
             ref.current = _ref;
+        }
     }, [viewRef]);
     useEffect(function () {
         if (imageRef.current === null)
@@ -101,7 +111,9 @@ export var Image = forwardRef(function (_a, ref) {
         left: 0,
         top: 0,
         width: '100%',
-        height: '100%'
+        height: '100%',
+        maxWidth: 'none',
+        maxHeight: 'none'
     };
     var addImage = imageAddStrategy({
         lazyLoad: lazyLoad,
@@ -115,13 +127,14 @@ export var Image = forwardRef(function (_a, ref) {
     });
     var webpSource = data.webpSrcSet && (React.createElement("source", { srcSet: data.webpSrcSet, sizes: (_b = sizes !== null && sizes !== void 0 ? sizes : data.sizes) !== null && _b !== void 0 ? _b : undefined, type: "image/webp" }));
     var regularSource = (React.createElement("source", { srcSet: (_c = data.srcSet) !== null && _c !== void 0 ? _c : buildSrcSet(data.src, data.width, srcSetCandidates), sizes: (_d = sizes !== null && sizes !== void 0 ? sizes : data.sizes) !== null && _d !== void 0 ? _d : undefined }));
-    var transition = fadeInDuration > 0 ? "opacity ".concat(fadeInDuration, "ms") : undefined;
-    var placeholder = usePlaceholder && (data.bgColor || data.base64) ? (React.createElement("img", { role: "presentation", "aria-hidden": "true", alt: "", src: (_e = data.base64) !== null && _e !== void 0 ? _e : undefined, style: __assign({ backgroundColor: (_f = data.bgColor) !== null && _f !== void 0 ? _f : undefined, objectFit: objectFit, objectPosition: objectPosition, transition: transition, opacity: showImage ? 0 : 1, 
+    //const transition = fadeInDuration > 0 ? `opacity ${fadeInDuration}ms` : undefined;
+    var transition = fadeInDuration > 0 ? "opacity ".concat(fadeInDuration, "ms, filter ").concat(fadeInDuration, "ms") : undefined;
+    var placeholder = usePlaceholder && (data.bgColor || data.base64) ? (React.createElement("img", { role: "presentation", "aria-hidden": "true", alt: "", src: (_e = data.base64) !== null && _e !== void 0 ? _e : undefined, className: placeholderClassName, style: __assign({ backgroundColor: (_f = data.bgColor) !== null && _f !== void 0 ? _f : undefined, objectFit: objectFit, objectPosition: objectPosition, transition: transition, opacity: showImage ? 0 : 1, 
             // During the opacity transition of the placeholder to the definitive version,
             // hardware acceleration is triggered. This results in the browser trying to render the
             // placeholder with your GPU, causing blurred edges. Solution: style the placeholder
             // so the edges overflow the container
-            position: 'absolute', left: '-5%', top: '-5%', width: '110%', height: '110%' }, pictureStyle) })) : null;
+            position: 'absolute', left: '-5%', top: '-5%', width: '110%', height: '110%', maxWidth: 'none', maxHeight: 'none' }, placeholderStyle) })) : null;
     var width = data.width, aspectRatio = data.aspectRatio;
     var height = (_g = data.height) !== null && _g !== void 0 ? _g : (aspectRatio ? width / aspectRatio : 0);
     var svg = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"".concat(width, "\" height=\"").concat(height, "\"></svg>");
@@ -141,11 +154,11 @@ export var Image = forwardRef(function (_a, ref) {
         addImage && (React.createElement("picture", null,
             webpSource,
             regularSource,
-            data.src && (React.createElement("img", { ref: imageRef, src: data.src, alt: (_h = data.alt) !== null && _h !== void 0 ? _h : '', title: (_j = data.title) !== null && _j !== void 0 ? _j : undefined, onLoad: handleLoad, fetchpriority: priority ? 'high' : undefined, className: pictureClassName, style: __assign(__assign(__assign({ opacity: showImage ? 1 : 0, transition: transition }, absolutePositioning), { objectFit: objectFit, objectPosition: objectPosition }), pictureStyle) })))),
+            data.src && (React.createElement("img", { ref: imageRef, src: data.src, alt: (_h = data.alt) !== null && _h !== void 0 ? _h : '', title: (_j = data.title) !== null && _j !== void 0 ? _j : undefined, onLoad: handleLoad, fetchpriority: priority ? 'high' : undefined, className: pictureClassName, style: __assign(__assign(__assign({ opacity: showImage ? 1 : 0, filter: loaded ? "blur(0px)" : "blur(100px)", transition: transition }, absolutePositioning), { objectFit: objectFit, objectPosition: objectPosition }), pictureStyle) })))),
         React.createElement("noscript", null,
             React.createElement("picture", null,
                 webpSource,
                 regularSource,
-                data.src && (React.createElement("img", { src: data.src, alt: (_k = data.alt) !== null && _k !== void 0 ? _k : '', title: (_l = data.title) !== null && _l !== void 0 ? _l : undefined, className: pictureClassName, style: __assign(__assign({}, absolutePositioning), pictureStyle), loading: lazyLoad ? 'lazy' : undefined, fetchpriority: priority ? 'high' : undefined }))))));
+                data.src && (React.createElement("img", { src: data.src, alt: (_k = data.alt) !== null && _k !== void 0 ? _k : '', title: (_l = data.title) !== null && _l !== void 0 ? _l : undefined, className: pictureClassName, style: __assign(__assign(__assign({}, absolutePositioning), { objectFit: objectFit, objectPosition: objectPosition }), pictureStyle), loading: lazyLoad ? 'lazy' : undefined, fetchpriority: priority ? 'high' : undefined }))))));
 });
 //# sourceMappingURL=index.js.map

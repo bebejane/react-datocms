@@ -64,7 +64,7 @@ function StructuredText(_a) {
                 if (!renderInlineRecord) {
                     throw new datocms_structured_text_utils_1.RenderError("The Structured Text document contains an 'inlineItem' node, but no 'renderInlineRecord' prop is specified!", node);
                 }
-                if (!(0, datocms_structured_text_utils_1.isStructuredText)(data) || !data.links) {
+                if (!((0, datocms_structured_text_utils_1.isStructuredText)(data) && data.links)) {
                     throw new datocms_structured_text_utils_1.RenderError("The document contains an 'itemLink' node, but the passed data prop is not a Structured Text GraphQL response, or data.links is not present!", node);
                 }
                 var item = data.links.find(function (item) { return item.id === node.item; });
@@ -78,7 +78,7 @@ function StructuredText(_a) {
                 if (!renderLinkToRecord) {
                     throw new datocms_structured_text_utils_1.RenderError("The Structured Text document contains an 'itemLink' node, but no 'renderLinkToRecord' prop is specified!", node);
                 }
-                if (!(0, datocms_structured_text_utils_1.isStructuredText)(data) || !data.links) {
+                if (!((0, datocms_structured_text_utils_1.isStructuredText)(data) && data.links)) {
                     throw new datocms_structured_text_utils_1.RenderError("The document contains an 'itemLink' node, but the passed data prop is not a Structured Text GraphQL response, or data.links is not present!", node);
                 }
                 var item = data.links.find(function (item) { return item.id === node.item; });
@@ -101,7 +101,7 @@ function StructuredText(_a) {
                 if (!renderBlock) {
                     throw new datocms_structured_text_utils_1.RenderError("The Structured Text document contains a 'block' node, but no 'renderBlock' prop is specified!", node);
                 }
-                if (!(0, datocms_structured_text_utils_1.isStructuredText)(data) || !data.blocks) {
+                if (!((0, datocms_structured_text_utils_1.isStructuredText)(data) && data.blocks)) {
                     throw new datocms_structured_text_utils_1.RenderError("The document contains an 'block' node, but the passed data prop is not a Structured Text GraphQL response, or data.blocks is not present!", node);
                 }
                 var item = data.blocks.find(function (item) { return item.id === node.item; });

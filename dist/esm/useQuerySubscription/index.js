@@ -58,7 +58,7 @@ var __rest = (this && this.__rest) || function (s, e) {
 };
 import { useState } from 'react';
 import { subscribeToQuery, } from 'datocms-listen';
-import { useDeepCompareEffectNoCheck as useDeepCompareEffect } from 'use-deep-compare-effect';
+import { useDeepCompareEffectNoCheck as useDeepCompareEffect, } from 'use-deep-compare-effect';
 export function useQuerySubscription(options) {
     var enabled = options.enabled, initialData = options.initialData, other = __rest(options, ["enabled", "initialData"]);
     var _a = useState(null), error = _a[0], setError = _a[1];

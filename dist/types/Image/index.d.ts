@@ -31,6 +31,8 @@ export declare type ImagePropTypes = {
     className?: string;
     /** Additional CSS class for the image inside the `<picture />` tag */
     pictureClassName?: string;
+    /** Additional CSS class for the placeholder image */
+    placeholderClassName?: string;
     /** Duration (in ms) of the fade-in transition effect upoad image loading */
     fadeInDuration?: number;
     /** @deprecated Use the intersectionThreshold prop */
@@ -45,6 +47,8 @@ export declare type ImagePropTypes = {
     style?: React.CSSProperties;
     /** Additional CSS rules to add to the image inside the `<picture />` tag */
     pictureStyle?: React.CSSProperties;
+    /** Additional CSS rules to add to the placeholder image */
+    placeholderStyle?: React.CSSProperties;
     /**
      * The layout behavior of the image as the viewport changes size
      *
