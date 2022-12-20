@@ -295,9 +295,8 @@ export const Image = forwardRef<HTMLDivElement, ImagePropTypes>(
       />
     );
 
-    //const transition = fadeInDuration > 0 ? `opacity ${fadeInDuration}ms` : undefined;
-    const transition = fadeInDuration > 0 ? `filter ${fadeInDuration}ms ease-out` : undefined;
-    const filter = loaded ? `blur(0px)` : `blur(50px)`
+    const transition = fadeInDuration > 0 ? `transform ${fadeInDuration}ms` : undefined;
+    const transform = loaded ? `scale(1)` : `scale(0.9)`
 
     const placeholder =
       usePlaceholder && (data.bgColor || data.base64) ? (
@@ -381,7 +380,7 @@ export const Image = forwardRef<HTMLDivElement, ImagePropTypes>(
                 className={pictureClassName}
                 style={{
                   opacity: showImage ? 1 : 0,
-                  filter,
+                  transform,
                   transition,
                   ...absolutePositioning,
                   objectFit,
