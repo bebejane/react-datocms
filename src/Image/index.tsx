@@ -193,7 +193,7 @@ export const Image = forwardRef<HTMLDivElement, ImagePropTypes>(
   (
     {
       className,
-      fadeInDuration = 500,
+      fadeInDuration = 750,
       intersectionTreshold,
       intersectionThreshold,
       intersectionMargin,
@@ -296,7 +296,7 @@ export const Image = forwardRef<HTMLDivElement, ImagePropTypes>(
     );
 
     //const transition = fadeInDuration > 0 ? `opacity ${fadeInDuration}ms` : undefined;
-    const transition = fadeInDuration > 0 ? `filter ${fadeInDuration * 2}ms` : undefined;
+    const transition = fadeInDuration > 0 ? `filter ${fadeInDuration}ms ease-out` : undefined;
     const filter = loaded ? `blur(0px)` : `blur(50px)`
 
     const placeholder =
