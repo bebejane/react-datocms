@@ -295,8 +295,8 @@ export const Image = forwardRef<HTMLDivElement, ImagePropTypes>(
       />
     );
 
-    const transition = fadeInDuration > 0 ? `transform ${fadeInDuration}ms` : undefined;
-    const transform = loaded ? `scale(1)` : `scale(0.9)`
+    const transition = fadeInDuration > 0 ? `border-width ${fadeInDuration}ms` : undefined;
+    const border = loaded ? `0px solid ${data.bgColor}` : `30px solid ${data.bgColor}`
 
     const placeholder =
       usePlaceholder && (data.bgColor || data.base64) ? (
@@ -311,7 +311,7 @@ export const Image = forwardRef<HTMLDivElement, ImagePropTypes>(
             objectFit,
             objectPosition,
             transition,
-            //opacity: showImage ? 0 : 1,
+            opacity: showImage ? 0 : 1,
             // During the opacity transition of the placeholder to the definitive version,
             // hardware acceleration is triggered. This results in the browser trying to render the
             // placeholder with your GPU, causing blurred edges. Solution: style the placeholder
@@ -380,7 +380,7 @@ export const Image = forwardRef<HTMLDivElement, ImagePropTypes>(
                 className={pictureClassName}
                 style={{
                   opacity: showImage ? 1 : 0,
-                  transform,
+                  border,
                   transition,
                   ...absolutePositioning,
                   objectFit,

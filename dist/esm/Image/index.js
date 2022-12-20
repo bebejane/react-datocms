@@ -127,10 +127,9 @@ export var Image = forwardRef(function (_a, ref) {
     });
     var webpSource = data.webpSrcSet && (React.createElement("source", { srcSet: data.webpSrcSet, sizes: (_b = sizes !== null && sizes !== void 0 ? sizes : data.sizes) !== null && _b !== void 0 ? _b : undefined, type: "image/webp" }));
     var regularSource = (React.createElement("source", { srcSet: (_c = data.srcSet) !== null && _c !== void 0 ? _c : buildSrcSet(data.src, data.width, srcSetCandidates), sizes: (_d = sizes !== null && sizes !== void 0 ? sizes : data.sizes) !== null && _d !== void 0 ? _d : undefined }));
-    var transition = fadeInDuration > 0 ? "transform ".concat(fadeInDuration, "ms") : undefined;
-    var transform = loaded ? "scale(1)" : "scale(0.9)";
-    var placeholder = usePlaceholder && (data.bgColor || data.base64) ? (React.createElement("img", { role: "presentation", "aria-hidden": "true", alt: "", src: (_e = data.base64) !== null && _e !== void 0 ? _e : undefined, className: placeholderClassName, style: __assign({ backgroundColor: (_f = data.bgColor) !== null && _f !== void 0 ? _f : undefined, objectFit: objectFit, objectPosition: objectPosition, transition: transition, 
-            //opacity: showImage ? 0 : 1,
+    var transition = fadeInDuration > 0 ? "border-width ".concat(fadeInDuration, "ms") : undefined;
+    var border = loaded ? "0px solid ".concat(data.bgColor) : "30px solid ".concat(data.bgColor);
+    var placeholder = usePlaceholder && (data.bgColor || data.base64) ? (React.createElement("img", { role: "presentation", "aria-hidden": "true", alt: "", src: (_e = data.base64) !== null && _e !== void 0 ? _e : undefined, className: placeholderClassName, style: __assign({ backgroundColor: (_f = data.bgColor) !== null && _f !== void 0 ? _f : undefined, objectFit: objectFit, objectPosition: objectPosition, transition: transition, opacity: showImage ? 0 : 1, 
             // During the opacity transition of the placeholder to the definitive version,
             // hardware acceleration is triggered. This results in the browser trying to render the
             // placeholder with your GPU, causing blurred edges. Solution: style the placeholder
@@ -155,7 +154,7 @@ export var Image = forwardRef(function (_a, ref) {
         addImage && (React.createElement("picture", null,
             webpSource,
             regularSource,
-            data.src && (React.createElement("img", { ref: imageRef, src: data.src, alt: (_h = data.alt) !== null && _h !== void 0 ? _h : '', title: (_j = data.title) !== null && _j !== void 0 ? _j : undefined, onLoad: handleLoad, fetchpriority: priority ? 'high' : undefined, className: pictureClassName, style: __assign(__assign(__assign({ opacity: showImage ? 1 : 0, transform: transform, transition: transition }, absolutePositioning), { objectFit: objectFit, objectPosition: objectPosition }), pictureStyle) })))),
+            data.src && (React.createElement("img", { ref: imageRef, src: data.src, alt: (_h = data.alt) !== null && _h !== void 0 ? _h : '', title: (_j = data.title) !== null && _j !== void 0 ? _j : undefined, onLoad: handleLoad, fetchpriority: priority ? 'high' : undefined, className: pictureClassName, style: __assign(__assign(__assign({ opacity: showImage ? 1 : 0, border: border, transition: transition }, absolutePositioning), { objectFit: objectFit, objectPosition: objectPosition }), pictureStyle) })))),
         React.createElement("noscript", null,
             React.createElement("picture", null,
                 webpSource,
