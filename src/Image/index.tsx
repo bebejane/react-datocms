@@ -311,7 +311,7 @@ export const Image = forwardRef<HTMLDivElement, ImagePropTypes>(
             objectFit,
             objectPosition,
             transition,
-            opacity: showImage ? 0 : 1,
+            //opacity: showImage ? 0 : 1,
             // During the opacity transition of the placeholder to the definitive version,
             // hardware acceleration is triggered. This results in the browser trying to render the
             // placeholder with your GPU, causing blurred edges. Solution: style the placeholder
